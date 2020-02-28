@@ -12,7 +12,7 @@ npm install jsondbnode
 
 ## Usage 
 ```js
-var DB = require("../src/index");
+var DB = require("jsondbnode");
 const Books = DB.model // example model
 const DBCONFIG = DB.manager
 
@@ -24,9 +24,11 @@ DBCONFIG.resetDB().then(console.log).catch(console.error)
 
 new Books({
     name: "The lord of the rings",
-    create_at: new Date(1954, 6, 29)
+    create_at: new Date(1954, 6, 28)
 }).save().then((newBook) => {
     console.log(newBook)
+    newBook.create_at = new Date(1954, 6, 29)
+    newBook.save().then(console.log).catch(console.error)
 }).catch(console.error)
 ```
 
