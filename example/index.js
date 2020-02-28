@@ -18,7 +18,7 @@ function saveAndEdit() {
             if (err) return console.log(err)
             console.log(data)
             //if lean is set to true you cant do the follow
-            data[0].nome = "NovaRanNet"
+            data[0].nome = "NovaRanNetTeste"
             data[0].save().then(console.log).catch(console.error)
         })
     }).catch(console.error)

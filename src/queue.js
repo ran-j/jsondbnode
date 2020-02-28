@@ -5,7 +5,6 @@ var queueList = []
 var updatequeueList = []
 
 const INSERT_TIMEOUT = 100;
-const UPDATE_TIMEOUT = 300;
 
 setInterval(() => {
     try {
@@ -18,15 +17,18 @@ setInterval(() => {
                 DBDATA.push(CURRENTDATA)
                 fs.writeFile(config.dbPath, JSON.stringify(DBDATA), (err, data) => {
                     if (err) return console.log(err)
+                    UpdateData()
                 })
             })
+        } else {
+            UpdateData()
         }
     } catch (error) {
         console.log(error)
     }
 }, INSERT_TIMEOUT);
 
-setInterval(() => {
+const UpdateData = () => {
     try {
         var current = updatequeueList.shift();
         if (current) {
@@ -47,7 +49,7 @@ setInterval(() => {
     } catch (error) {
         console.log(error)
     }
-}, UPDATE_TIMEOUT);
+}
 
 const addToQueue = (stringData) => {
     return queueList.push(stringData)
