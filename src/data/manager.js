@@ -14,6 +14,16 @@ const resetDB = () => new Promise((resolve, reject) => {
 
 const configDB = ({ dbPath }) => {
     config.dbPath = dbPath
+    fs.access(dbPath, fs.F_OK, (err) => {
+        if (err) {
+            fs.writeFile(config.dbPath, '[]', (err, data) => {
+                if (err) return reject(err)
+                resolve("done")
+            })
+            return
+        }
+        //file exists
+    })
 }
 
 module.exports = {
