@@ -46,8 +46,6 @@ class DbSchema {
                         for (var i = 0, iMax = DBDATA.length; i < iMax; i++) {
                             for (var j = 0, jMax = keys.length; j < jMax; j++) {
                                 if (DBDATA[i][keys[j]] == query[keys[j]]) {
-                                    // var todate = new Date(DBDATA[i].date)
-                                    // DBDATA[i].date = todate.getTime();
                                     output.push(this._lean ? config.reverseToDate(DBDATA[i]) : new resposnseFile(config.reverseToDate(DBDATA[i])))
                                 }
                             }
@@ -77,7 +75,7 @@ class DbSchema {
                     if (err) return reject(err)
                     var DBDATA = JSON.parse(data) // just to check if db exist and it can be parsed
                     var THISDATA = {
-                        _id: Math.random().toString(36).substring(7) + Math.random().toString(36).substring(7) + Math.random().toString(36).substring(7),
+                        _id: config.generateID(),
                         __meta__: {
                             new: false,
                             v: 0
@@ -90,7 +88,7 @@ class DbSchema {
                     setTimeout(() => {
                         this._isNew = false;
                         resolve(new resposnseFile(config.reverseToDate(THISDATA)))
-                    }, 300);                    
+                    }, Queue.queueTimeout() + 200); //wait until queue timeout plus 200 ms to resolve               
                 })
             } catch (err) {
                 reject(err)

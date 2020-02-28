@@ -34,7 +34,7 @@ class responseSchema {
                         setTimeout(() => {
                             this._paralelol = true;
                             resolve(new responseSchema(config.reverseToDate(output)))
-                        }, 300);
+                        }, Queue.queueTimeout() + 200); //wait until queue timeout plus 200 ms to resolve  
                     })
                 } catch (err) {
                     reject(err)

@@ -65,8 +65,13 @@ const clearQueue = () => {
     return true
 }
 
+const queueTimeout = () => {
+    return INSERT_TIMEOUT;
+}
+
 module.exports = {
     addToQueue,
     addToQueueUpdate,
+    queueTimeout,
     clearQueue
 }
