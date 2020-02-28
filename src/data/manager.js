@@ -17,8 +17,7 @@ const configDB = ({ dbPath }) => {
     fs.access(dbPath, fs.F_OK, (err) => {
         if (err) {
             fs.writeFile(config.dbPath, '[]', (err, data) => {
-                if (err) return reject(err)
-                resolve("done")
+                if (err) throw err
             })
             return
         }
