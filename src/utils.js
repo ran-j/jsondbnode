@@ -1,5 +1,3 @@
-const dbPath = __dirname + "/data/db.json"
-
 const IsDate = (date) => {
     try {
         let parse = new Date(date)
