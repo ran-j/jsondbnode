@@ -1,4 +1,4 @@
-const IsDate = (date) => {
+const ToStringDate = (date) => {
     try {
         let parse = new Date(date)
         return parse == "Invalid Date" ? date : parse.toISOString()
@@ -34,8 +34,7 @@ const generateID = () => {
 }
 
 module.exports = {
-    dbPath,
-    IsDate,
+    ToStringDate,
     reverseToDate,
     generateID
 }

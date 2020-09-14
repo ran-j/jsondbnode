@@ -12,15 +12,46 @@ const writeData = (body, schemaName) => {
                 if (err) return console.log(err)
             })
         }
-    })
+    }).catch(console.error)
 }
 
-const updateData = (body) => {
-
+const updateData = (id, body, schemaName) => {
+    readData().then((originalData) => {
+        if(originalData) {
+            if(originalData[schemaName] && Array.isArray(originalData[schemaName])) {
+                originalData[schemaName].forEach((row, index) => {
+                    if(row._id === id) {
+                        Object.keys(body).forEach((bodyKey) => {
+                            originalData[schemaName][index][bodyKey] = row[bodyKey] 
+                        })
+                    }
+                })
+                fs.writeFile(dbPath, JSON.stringify(originalData), (err, data) => {
+                    if (err) return console.log(err)
+                })
+            } else {
+                console.error('schemaName not found')
+            }
+        }
+    }).catch(console.error)
 }
 
-const deleteData = (body) => {
-
+const deleteData = (id, schemaName) => {
+    readData().then((originalData) => {
+        if(originalData) {
+            if(originalData[schemaName] && Array.isArray(originalData[schemaName])) {
+                const index = originalData[schemaName].findIndex((row) => row._id === id)
+                if(index > -1) {
+                    originalData[schemaName].slice(0 , index)
+                    fs.writeFile(dbPath, JSON.stringify(originalData), (err, data) => {
+                        if (err) return console.log(err)
+                    })
+                }
+            } else {
+                console.error('schemaName not found')
+            }
+        }
+    }).catch(console.error)
 }
 
 const configSchema = (originalData, schemaName) => {

@@ -16,6 +16,8 @@ const appendData = async (body, type, schemaName) => { //'append' 'update' 'dele
         });
         altered = true
         ifNotStartedStart()
+        //return object
+        return true
     } catch (error) {
         throw new Error("Invalid payload");
     }
@@ -43,9 +45,9 @@ const startJobs = () => {
                     if(current.type === 'append') {
                         writeData(current.data, current.schemaName)
                     } else if (current.type === 'update') {
-                        updateData(current.data, current.schemaName)
+                        updateData(current.data._id, current.data, current.schemaName)
                     } else if (current.type === 'deleted') {
-                        deleteData(current.data, current.schemaName)
+                        deleteData(current.data._id, current.schemaName)
                     }
                 }
             }
