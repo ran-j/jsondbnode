@@ -3,7 +3,7 @@
   "description": "Json database mede for nodejs",
   "author": "Ranieri Junior <ran-junior@hotmail.com>",
   "version": "1.2.3",
-  "main": "src/index.js",
+  "main": "tes.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

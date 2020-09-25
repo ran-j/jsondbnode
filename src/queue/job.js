@@ -36,11 +36,11 @@ const startJobs = () => {
     try {
         //block from call start again
         if(!startOnlyOne) return 'Job alreadyStarted'
-        syncData()
+        // syncData()
         //start queue
         setInterval(() => {
             if(QueueList.length && altered) {
-                var current = updatequeueList.shift()
+                var current = QueueList.shift()
                 if (current) {
                     if(current.type === 'append') {
                         writeData(current.data, current.schemaName)

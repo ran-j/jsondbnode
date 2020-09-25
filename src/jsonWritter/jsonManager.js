@@ -1,14 +1,14 @@
 const fs = require("fs")
 const { resolve } = require("path")
 
-var dbPath = ''
+const  { getPath } = require('../constants')
 
 const writeData = (body, schemaName) => {
     readData().then((originalData) => {
         if(originalData) {
             originalData[schemaName] = configSchema(originalData, schemaName)
             originalData[schemaName].push(body)                        
-            fs.writeFile(dbPath, JSON.stringify(originalData), (err, data) => {
+            fs.writeFile(getPath(), JSON.stringify(originalData), (err, data) => {
                 if (err) return console.log(err)
             })
         }
@@ -26,7 +26,7 @@ const updateData = (id, body, schemaName) => {
                         })
                     }
                 })
-                fs.writeFile(dbPath, JSON.stringify(originalData), (err, data) => {
+                fs.writeFile(getPath(), JSON.stringify(originalData), (err, data) => {
                     if (err) return console.log(err)
                 })
             } else {
@@ -43,7 +43,7 @@ const deleteData = (id, schemaName) => {
                 const index = originalData[schemaName].findIndex((row) => row._id === id)
                 if(index > -1) {
                     originalData[schemaName].slice(0 , index)
-                    fs.writeFile(dbPath, JSON.stringify(originalData), (err, data) => {
+                    fs.writeFile(getPath(), JSON.stringify(originalData), (err, data) => {
                         if (err) return console.log(err)
                     })
                 }
@@ -66,18 +66,19 @@ const configSchema = (originalData, schemaName) => {
 }
 
 const readData = () => new Promise((resolve, reject) => {
-    fs.access(dbPath, fs.F_OK, (err) => {
+    fs.access(getPath(), fs.F_OK, (err) => {
         if (!err) {
-            fs.readFile(config.dbPath, (error, data) => {
-                if(error) {
+            fs.readFile(getPath(), (error, data) => {
+                console.log(error)
+                if(error === null) {
                     try {
                         resolve(JSON.parse(data))
                     } catch (er) {
-                        console.warn(`Error: ${er.message}`)
+                        console.warn(`Error1: ${er.message}`)
                         resolve(null)
                     }
                 } else {
-                    console.warn(`Error: ${error.message}`)
+                    console.warn(`Error2: ${error}`)
                     resolve(null)
                 }
             })
@@ -88,9 +89,27 @@ const readData = () => new Promise((resolve, reject) => {
     })
 })
 
+const getDataBySchema = (schemaName) => new Promise((resolve, reject) => {
+    try {
+        fs.readFile(getPath(), (err, data) => {
+            if (err) return reject(err)
+            var DBDATA = JSON.parse(data)
+            for (var i = 0 , iMax = DBDATA.length; i < iMax; i++) {
+                if(Object.keys(DBDATA[i][0] === schemaName)) {
+                    return resolve(DBDATA[i][schemaName])
+                }
+            }
+            resolve([])
+        })
+    } catch (error) {
+        reject(error);
+    }
+})
+
 module.exports = {
     writeData,
     readData,
     updateData,
-    deleteData
+    deleteData,
+    getDataBySchema
 }
