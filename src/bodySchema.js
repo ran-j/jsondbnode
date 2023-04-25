@@ -23,21 +23,30 @@ class DbSchema {
     }
 
     static lean(doLean) {
+        console.log("lean is deprecated, use find({}, { lean: true }) instead")
         this._lean = doLean
     }
 
     static sort(_param) {
+        console.warn("sort is deprecated, use find({}, { sort: 'name' }) instead")
         this._sort = _param
     }
 
     static limit(_limit) {
+        console.warn("limit is deprecated, use find({}, { limit: 10 }) instead")
         this._limit = _limit
     }
 
-    static find(query) {
+    static find(query, options = {}) {
         return {
             exec: (cb) => {
                 try {
+                    if (Object.keys(options).length > 0) {
+                        if (options.limit) this._limit = options.limit
+                        if (options.sort) this._sort = options.sort
+                        if (options.lean) this._lean = options.lean
+                    }
+
                     fs.readFile(config.dbPath, (err, data) => {
                         if (err) return cb(err, []);
                         var DBDATA = JSON.parse(data)

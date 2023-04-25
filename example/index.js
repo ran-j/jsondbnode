@@ -8,13 +8,13 @@ function saveAndEdit() {
         creat: new Date()
     }).save().then((newEscola) => {
         //sort by field
-        Escolas.sort("creat") //default null
+        // Escolas.sort("creat") //default null
         //limit response
-        Escolas.limit(2) //default 100
+        // Escolas.limit(2) //default 100
         //do not parse to jsonDBObject
         // Escolas.lean(false) //default false
         //find by query
-        Escolas.find({ nome: "RanNet" }).exec((err, data) => { // after a query the option above are reset to default
+        Escolas.find({ nome: "RanNet" }, { sort : 'creat', limit: 2 }).exec((err, data) => { // after a query the option above are reset to default
             if (err) return console.log(err)
             console.log(data)
             //if lean is set to true you cant do the follow
